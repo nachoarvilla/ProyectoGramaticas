@@ -82,12 +82,18 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * previamente.
      */
     public void addProduction(char nonterminal, String production) throws CYKAlgorithmException {
-        if(nonTerminals.contains(nonterminal) && (production.equals(production.toUpperCase()) && production.length() == 2)){
+        if(nonTerminals.contains(nonterminal) && (production.length() == 1 && !terminals.contains(production.charAt(0)))){
+            throw new CYKAlgorithmException();
+        }else if(nonTerminals.contains(nonterminal) && (production.length() == 2 && !nonTerminals.contains(production.charAt(1)))){
+            throw new CYKAlgorithmException();
+        }else if(productions.contains(production)){
+            throw new CYKAlgorithmException();
+        }else if(nonTerminals.contains(nonterminal) && (production.equals(production.toUpperCase()) && production.length() == 2)){
             productions.add(production);
         }else if(nonTerminals.contains(nonterminal) && (production.equals(production.toLowerCase()) && production.length() == 1)){
             productions.add(production);
         }else{
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new CYKAlgorithmException();
         }
     }
 
