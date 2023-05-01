@@ -44,8 +44,10 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * @throws CYKAlgorithmException Si el elemento no es una letra minúscula.
      */
     public void addTerminal(char terminal) throws CYKAlgorithmException {
-        if(Character.isUpperCase(terminal)){
-            throw new UnsupportedOperationException("Not supported yet.");
+        if(!Character.isLowerCase(terminal)){
+            throw new CYKAlgorithmException();
+        }else if(terminals.contains(terminal)){
+            throw new CYKAlgorithmException();
         }else if(Character.isLowerCase(terminal)){
             terminals.add(terminal);
         }
