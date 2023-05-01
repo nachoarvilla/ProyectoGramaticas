@@ -66,7 +66,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
         if(nonTerminals.contains(nonterminal)){
             startSymbol = nonterminal;
         }else if(!nonTerminals.contains(nonterminal)){
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new CYKAlgorithmException();
         }
     }
 
