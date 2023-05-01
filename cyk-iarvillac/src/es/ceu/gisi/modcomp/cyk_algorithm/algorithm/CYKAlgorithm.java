@@ -28,7 +28,9 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      */
     public void addNonTerminal(char nonterminal) throws CYKAlgorithmException {
         if(!Character.isUpperCase(nonterminal)){
-            throw new UnsupportedOperationException("Not supported yet.");
+            throw new CYKAlgorithmException();
+        }else if(nonTerminals.contains(nonterminal)){
+            throw new CYKAlgorithmException();
         }else if(Character.isUpperCase(nonterminal)){
             nonTerminals.add(nonterminal);
         }
