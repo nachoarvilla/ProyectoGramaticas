@@ -4,6 +4,7 @@ import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.exceptions.CYKAlgorithmExcept
 import es.ceu.gisi.modcomp.cyk_algorithm.algorithm.interfaces.CYKAlgorithmInterface;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Esta clase contiene la implementación de la interfaz CYKAlgorithmInterface
@@ -17,7 +18,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
     List<Character> nonTerminals = new ArrayList<>();
     List<Character> terminals = new ArrayList<>();
     char startSymbol;
-    List<String> productions = new ArrayList<>();
+    HashMap<Character, List<String>> productions = new HashMap<>();
     
     @Override
     /**
@@ -82,17 +83,54 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * previamente.
      */
     public void addProduction(char nonterminal, String production) throws CYKAlgorithmException {
-        if(nonTerminals.contains(nonterminal) && (production.length() == 1 && !terminals.contains(production.charAt(0)))){
+        
+        if(nonTerminals.contains(nonterminal) && production.length() == 2){
+            if(production.equals(production.toUpperCase())){
+                if(nonTerminals.contains(production.charAt(0)) && nonTerminals.contains(production.charAt(1))){
+                    if(productions.containsKey(nonterminal)){
+                        List<String> productionsOfNonterminal = productions.get(nonterminal);
+                        
+                        if(productionsOfNonterminal.contains(production)){
+                            throw new CYKAlgorithmException();
+                        }else{
+                            productionsOfNonterminal.add(production);
+                        }
+                    }else{
+                        List<String> productionsOfNonterminal = new ArrayList<>();
+                        productions.put(nonterminal, productionsOfNonterminal);
+                        productionsOfNonterminal.add(production);
+                    }
+                }else{
+                    throw new CYKAlgorithmException();
+                }
+            }else{
+                throw new CYKAlgorithmException();
+            }
+        }else if(nonTerminals.contains(nonterminal) && production.length() == 1){
+            if(production.equals(production.toLowerCase())){
+                if(terminals.contains(production.charAt(0))){
+                    if(productions.containsKey(nonterminal)){
+                        List<String> productionsOfNonterminal = productions.get(nonterminal);
+                        
+                        if(productionsOfNonterminal.contains(production)){
+                            throw new CYKAlgorithmException();
+                        }else{
+                            productionsOfNonterminal.add(production);
+                        }
+                    }else{
+                        List<String> productionsOfNonterminal = new ArrayList<>();
+                        productions.put(nonterminal, productionsOfNonterminal);
+                        productionsOfNonterminal.add(production);
+                    }
+                }else{
+                    throw new CYKAlgorithmException();
+                }
+            }else{
+                throw new CYKAlgorithmException();
+            }
+        }else if(!nonTerminals.contains(nonterminal)){
             throw new CYKAlgorithmException();
-        }else if(nonTerminals.contains(nonterminal) && (production.length() == 2 && !nonTerminals.contains(production.charAt(1)))){
-            throw new CYKAlgorithmException();
-        }else if(productions.contains(production)){
-            throw new CYKAlgorithmException();
-        }else if(nonTerminals.contains(nonterminal) && (production.equals(production.toUpperCase()) && production.length() == 2)){
-            productions.add(production);
-        }else if(nonTerminals.contains(nonterminal) && (production.equals(production.toLowerCase()) && production.length() == 1)){
-            productions.add(production);
-        }else{
+        }else if(production.length() > 2){
             throw new CYKAlgorithmException();
         }
     }
