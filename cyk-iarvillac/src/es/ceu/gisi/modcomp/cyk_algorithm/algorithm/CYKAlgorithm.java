@@ -149,6 +149,18 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * gramática es vacía o si el autómata carece de axioma.
      */
     public boolean isDerived(String word) throws CYKAlgorithmException {
+        char[][][] algorithmTable = new char[word.length()][word.length()][nonTerminals.size()];
+        
+        for(int i = 0; i < 1; i++){
+            for(int j = 0; j <= word.length(); j++){
+                algorithmTable[i][j][0] = word.charAt(i);
+            }
+        }
+        for(int i = 1; i < 2; i++){
+            for(int j = 0; j <= word.length(); j++){
+                
+            }
+        }
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -195,7 +207,14 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * salida podría ser: "S::=AB|BC".
      */
     public String getProductions(char nonterminal) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(productions.containsKey(nonterminal)){
+            String production1 = productions.get(nonterminal).get(0);
+            String production2 = productions.get(nonterminal).get(1);
+            
+            return nonterminal + "::=" + production1 + "|" + production2;
+        }else{
+            return " ";
+        }
     }
 
     @Override
