@@ -149,18 +149,19 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * gramática es vacía o si el autómata carece de axioma.
      */
     public boolean isDerived(String word) throws CYKAlgorithmException {
-        char[][][] algorithmTable = new char[word.length()][word.length()][nonTerminals.size()];
+        List<Character> nonTerminalsForTerminal = new ArrayList<>();
+        char[][][] algorithmTable = new char[word.length()][word.length()][nonTerminalsForTerminal.size()];
         
-        for(int i = 0; i < 1; i++){
-            for(int j = 0; j <= word.length(); j++){
-                algorithmTable[i][j][0] = word.charAt(i);
+        for(int i = 0; i < word.length(); i++){
+            for(int j = 0; j < nonTerminals.size(); j++){
+                if(productions.get(nonTerminals.get(j)).contains(word.charAt(i))){
+                    nonTerminalsForTerminal.add(nonTerminals.get(j));
+                }
             }
+            algorithmTable[0][i][0] = nonTerminalsForTerminal.get(0);
+            algorithmTable[0][i][1] = nonTerminalsForTerminal.get(1);
         }
-        for(int i = 1; i < 2; i++){
-            for(int j = 0; j <= word.length(); j++){
-                
-            }
-        }
+            
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -191,7 +192,9 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * dejando el algoritmo listo para volver a insertar una gramática nueva.
      */
     public void removeGrammar() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        productions.clear();
+        nonTerminals.clear();
+        terminals.clear();
     }
 
     @Override
@@ -213,7 +216,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
             
             return nonterminal + "::=" + production1 + "|" + production2;
         }else{
-            return " ";
+            return "";
         }
     }
 
