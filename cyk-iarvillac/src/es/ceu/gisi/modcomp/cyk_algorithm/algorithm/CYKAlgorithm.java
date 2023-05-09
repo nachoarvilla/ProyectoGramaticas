@@ -19,6 +19,7 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
     List<Character> terminals = new ArrayList<>();
     char startSymbol;
     HashMap<Character, List<String>> productions = new HashMap<>();
+    HashMap<String, List<Character>> inverseProductions = new HashMap<>();
     
     @Override
     /**
@@ -133,6 +134,58 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
         }else if(production.length() > 2){
             throw new CYKAlgorithmException();
         }
+        
+        //Esta parte es para rellenar el HashMap inverso que se necesitará para hacer el algoritmo
+        if(nonTerminals.contains(nonterminal) && production.length() == 2){
+            if(production.equals(production.toUpperCase())){
+                if(nonTerminals.contains(production.charAt(0)) && nonTerminals.contains(production.charAt(1))){
+                    if(inverseProductions.containsKey(production)){
+                        List<Character> nonTerminalsForProduction = inverseProductions.get(production);
+                        
+                        if(nonTerminalsForProduction.contains(nonterminal)){
+                            throw new CYKAlgorithmException();
+                        }else{
+                            nonTerminalsForProduction.add(nonterminal);
+                        }
+                    }else{
+                        List<Character> nonTerminalsForProduction = new ArrayList<>();
+                        inverseProductions.put(production, nonTerminalsForProduction);
+                        nonTerminalsForProduction.add(nonterminal);
+                    }
+                }else{
+                    throw new CYKAlgorithmException();
+                }
+            }else{
+                throw new CYKAlgorithmException();
+            }
+        }else if(nonTerminals.contains(nonterminal) && production.length() == 1){
+            if(production.equals(production.toLowerCase())){
+                if(terminals.contains(production.charAt(0))){
+                    if(inverseProductions.containsKey(production)){
+                        List<Character> nonTerminalsForProduction = inverseProductions.get(production);
+                        
+                        if(nonTerminalsForProduction.contains(nonterminal)){
+                            throw new CYKAlgorithmException();
+                        }else{
+                            nonTerminalsForProduction.add(nonterminal);
+                        }
+                    }else{
+                        List<Character> nonTerminalsForProduction = new ArrayList<>();
+                        inverseProductions.put(production, nonTerminalsForProduction);
+                        nonTerminalsForProduction.add(nonterminal);
+                    }
+                }else{
+                    throw new CYKAlgorithmException();
+                }
+            }else{
+                throw new CYKAlgorithmException();
+            }
+        }else if(!nonTerminals.contains(nonterminal)){
+            throw new CYKAlgorithmException();
+        }else if(production.length() > 2){
+            throw new CYKAlgorithmException();
+        }
+        
     }
 
     @Override
@@ -149,19 +202,6 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * gramática es vacía o si el autómata carece de axioma.
      */
     public boolean isDerived(String word) throws CYKAlgorithmException {
-        List<Character> nonTerminalsForTerminal = new ArrayList<>();
-        char[][][] algorithmTable = new char[word.length()][word.length()][nonTerminalsForTerminal.size()];
-        
-        for(int i = 0; i < word.length(); i++){
-            for(int j = 0; j < nonTerminals.size(); j++){
-                if(productions.get(nonTerminals.get(j)).contains(word.charAt(i))){
-                    nonTerminalsForTerminal.add(nonTerminals.get(j));
-                }
-            }
-            algorithmTable[0][i][0] = nonTerminalsForTerminal.get(0);
-            algorithmTable[0][i][1] = nonTerminalsForTerminal.get(1);
-        }
-            
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
