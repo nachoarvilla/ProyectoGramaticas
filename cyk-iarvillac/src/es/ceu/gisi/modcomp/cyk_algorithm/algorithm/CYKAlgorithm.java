@@ -299,9 +299,12 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
         if(productions.containsKey(nonterminal)){
             String productiontoString = nonterminal + "::=";
             for(int i = 0; i < productions.get(nonterminal).size(); i++){
-                productiontoString = productiontoString += productions.get(nonterminal).get(i) + "|";
+                productiontoString = productiontoString + "|" + productions.get(nonterminal).get(i);
             }
-            return productiontoString;
+            String productionOnly = productiontoString.substring(5);
+            productiontoString = nonterminal + "::=";
+            
+            return productiontoString + productionOnly;
         }else{
             return "";
         }
