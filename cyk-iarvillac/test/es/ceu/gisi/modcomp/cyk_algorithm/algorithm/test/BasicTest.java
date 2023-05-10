@@ -419,4 +419,123 @@ public class BasicTest {
 
         assertFalse(cyk.isDerived("bbb"));
     }
+    
+    @Test
+    public void comprobarDerivacionGramatica1() throws CYKAlgorithmException{
+        
+        cyk = new CYKAlgorithm();
+        
+        cyk.addNonTerminal('A');
+        cyk.addNonTerminal('B');
+        cyk.addNonTerminal('C');
+        
+        cyk.addTerminal('a');
+        cyk.addTerminal('b');
+        
+        cyk.setStartSymbol('A');
+        
+        cyk.addProduction('A', "BC");
+        
+        cyk.addProduction('B', "CA");
+        cyk.addProduction('B', "a");
+        
+        cyk.addProduction('C', "AB");
+        cyk.addProduction('C', "b");
+        
+        assertFalse(cyk.isDerived("ababa"));
+        assertTrue(cyk.isDerived("ab"));
+    }
+    
+    @Test
+    public void comprobarDerivacionGramatica2() throws CYKAlgorithmException{
+        
+        cyk = new CYKAlgorithm();
+        
+        cyk.addNonTerminal('A');
+        cyk.addNonTerminal('B');
+        cyk.addNonTerminal('C');
+        cyk.addNonTerminal('D');
+        
+        cyk.addTerminal('a');
+        cyk.addTerminal('b');
+        cyk.addTerminal('c');
+        
+        cyk.setStartSymbol('A');
+        
+        cyk.addProduction('A', "BC");
+        cyk.addProduction('A', "a");
+        
+        cyk.addProduction('B', "CD");
+        
+        cyk.addProduction('C', "BA");
+        cyk.addProduction('C', "b");
+        
+        cyk.addProduction('D', "c");
+        
+        assertFalse(cyk.isDerived("aacb"));
+        assertTrue(cyk.isDerived("bcbca"));
+        
+    }
+    
+    @Test
+    public void comprobarDerivacionGamatica3() throws CYKAlgorithmException{
+        
+        cyk = new CYKAlgorithm();
+        
+        cyk.addNonTerminal('S');
+        cyk.addNonTerminal('A');
+        cyk.addNonTerminal('B');
+        cyk.addNonTerminal('C');
+        cyk.addNonTerminal('D');
+        
+        cyk.addTerminal('a');
+        cyk.addTerminal('b');
+        
+        cyk.setStartSymbol('S');
+        
+        cyk.addProduction('S', "AB");
+        
+        cyk.addProduction('A', "BS");
+        cyk.addProduction('A', "a");
+        
+        cyk.addProduction('B', "SA");
+        cyk.addProduction('B', "b");
+        cyk.addProduction('B', "DC");
+        
+        cyk.addProduction('C', "a");
+        
+        cyk.addProduction('D', "b");
+        
+        assertFalse(cyk.isDerived("bbaab"));
+        assertTrue(cyk.isDerived("baabb"));
+    }
+    
+    @Test
+    public void comprobarDerivacionGramatica4() throws CYKAlgorithmException{
+        
+        cyk = new CYKAlgorithm();
+        
+        cyk.addNonTerminal('S');
+        cyk.addNonTerminal('A');
+        cyk.addNonTerminal('B');
+        
+        cyk.addTerminal('a');
+        cyk.addTerminal('b');
+        
+        cyk.setStartSymbol('S');
+        
+        cyk.addProduction('S', "AB");
+        cyk.addProduction('S', "BA");
+        cyk.addProduction('S', "a");
+        
+        cyk.addProduction('A', "AA");
+        cyk.addProduction('A', "BB");
+        
+        cyk.addProduction('B', "BB");
+        cyk.addProduction('B', "SB");
+        cyk.addProduction('B', "b");
+        
+        assertFalse(cyk.isDerived("bbaba"));
+        assertTrue(cyk.isDerived("bbabab"));
+    }
 }

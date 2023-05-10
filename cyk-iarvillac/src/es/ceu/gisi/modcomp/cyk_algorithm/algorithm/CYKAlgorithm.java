@@ -318,7 +318,13 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * elementos no terminales.
      */
     public String getGrammar() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if(nonTerminals.isEmpty()){
+            return "";
+        }else{
+            for(int i = 0; i < nonTerminals.size(); i++){
+                return getProductions(nonTerminals.get(i)) + "\n";
+            }
+        }
+        return "";
     }
-
 }
