@@ -443,7 +443,7 @@ public class BasicTest {
         cyk.addProduction('C', "b");
         
         assertFalse(cyk.isDerived("ababa"));
-        assertTrue(cyk.isDerived("ab"));
+        assertTrue(cyk.isDerived("babb"));
     }
     
     @Test

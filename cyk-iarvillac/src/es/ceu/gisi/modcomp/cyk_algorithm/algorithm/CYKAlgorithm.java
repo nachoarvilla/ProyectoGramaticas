@@ -268,7 +268,60 @@ public class CYKAlgorithm implements CYKAlgorithmInterface {
      * gramática es vacía o si el autómata carece de axioma.
      */
     public String algorithmStateToString(String word) throws CYKAlgorithmException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int n = word.length();
+        List<List<Set<Character>>> table = new ArrayList<>();
+    
+        for (int i = 0; i < n; i++) {
+            if (!terminals.contains(word.charAt(i))) {
+                throw new CYKAlgorithmException();
+            }
+        }
+    
+        for (int i = 0; i < n; i++) {
+            table.add(new ArrayList<>());
+            for (int j = 0; j < n; j++) {
+                table.get(i).add(new HashSet<>());
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            char terminal = word.charAt(i);
+            List<Character> nonTerminals = inverseProductions.get(Character.toString(terminal));
+            if (nonTerminals != null) {
+                for (char nonTerminal : nonTerminals) {
+                table.get(i).get(0).add(nonTerminal);
+                }
+            }
+        }
+
+        for (int j = 1; j < n; j++) {
+            for (int i = 0; i < n - j; i++) {
+                for (int k = 0; k < j; k++) {
+                    Set<Character> nonTerminals1 = table.get(i).get(k);
+                    Set<Character> nonTerminals2 = table.get(i + k + 1).get(j - k - 1);
+                    for (char nonTerminal1 : nonTerminals1) {
+                        for (char nonTerminal2 : nonTerminals2) {
+                            String production = Character.toString(nonTerminal1) + Character.toString(nonTerminal2);
+                            List<Character> nonTerminals = inverseProductions.get(production);
+                            if (nonTerminals != null) {
+                                table.get(i).get(j).addAll(nonTerminals);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        StringBuilder tableString = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n - i; j++) {
+                Set<Character> cell = table.get(i).get(j);
+                tableString.append(cell.toString()).append("\t");
+            }
+            tableString.append("\n");
+        }
+
+        return tableString.toString();
     }
 
     @Override
